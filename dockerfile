@@ -1,7 +1,6 @@
-FROM suresh2.0
+FROM suneha1.0
 
-MAINTAINER Suresh
-
+MAINTAINER Suneha
 # Set the working directory to /app
 WORKDIR /app
 
@@ -15,7 +14,7 @@ RUN pip install -r requirements.txt
 #RUN pip install newrelic ( to avoid this layer, added newrelic inside requirement.txt)
 
 # Make port 80 available to the world outside this container
-EXPOSE 5000
+EXPOSE 8081
 
 # Define environment variable
 ENV NAME ITRAIN-PULSAR
