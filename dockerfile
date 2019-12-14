@@ -1,31 +1,15 @@
-FROM suneha1.0
+ARG PYTHON_VERSION=2.7
 
-MAINTAINER Suneha
-# Set the working directory to /app
-WORKDIR /app
+FROM python:${PYTHON_VERSION}
 
-# Copy the current directory contents into the container at /app
-ADD . /app
+RUN mkdir /src
+WORKDIR /src
 
-# Install any needed packages specified in requirements.txt
+COPY requirements.txt /src/requirements.txt
 RUN pip install -r requirements.txt
 
-# Install python newrelic agent on this docker image
-#RUN pip install newrelic ( to avoid this layer, added newrelic inside requirement.txt)
+COPY test-requirements.txt /src/test-requirements.txt
+RUN pip install -r test-requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 8081
-
-# Define environment variable
-ENV NAME ITRAIN-PULSAR
-
-#When you launch the container, it runs the script and then exits
-ENTRYPOINT ["newrelic-admin", "run-program"]
-
-#Default environment variables
-ENV NEW_RELIC_LOG=stderr \
-    NEW_RELIC_LOG_LEVEL=info \
-    NEW_RELIC_ENABLED=true
-
-# Run app.py when the container launches
-CMD ["python", "app.py"]
+COPY . /src
+RUN pip install .
